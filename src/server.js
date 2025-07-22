@@ -11,3 +11,5 @@ app.get('/', function(req, res){
 app.listen(port, hostname, ()=>{
     console.log(`server da chay tai duong dan http://${hostname}:${port}`)
 })
+
+// ok roi
