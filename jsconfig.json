@@ -1,7 +1,5 @@
 /**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
+ thư mục này để cấu hình đường dẫn trong vscode, ví dụ khi ctrl + click vào mapOder trong server.js thi sẽ nhảy tới file export mapOrder
  */
 {
   "compilerOptions": {
