@@ -1,33 +1,48 @@
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
- */
-
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+import { CONNECT_BD, GET_DB, CLOSE_DB} from './config/mongodb' 
+import exitHook  from 'async-exit-hook'
+import {env} from  './config/environment'
+const START_SERVER = () =>{
+  const app = express()
 
-const app = express()
+  app.get('/', async (req, res) => {
+    // Test Absolute import mapOrder
+    // eslint-disable-next-line no-console
+    console.log(await GET_DB().listCollections().toArray())
+    res.end('<h1>Hello World!</h1><hr>')
+  })
 
-const hostname = 'localhost'
-const port = 8017
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Hello ${env.AUTHOR}, I am running at http://${env.APP_HOST}:${env.APP_PORT}/`)
+  })
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  // eslint-disable-next-line no-console
-  console.log(mapOrder(
-    [{ id: 'id-1', name: 'One' },
-      { id: 'id-2', name: 'Two' },
-      { id: 'id-3', name: 'Three' },
-      { id: 'id-4', name: 'Four' },
-      { id: 'id-5', name: 'Five' }],
-    ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-    'id'
-  ))
-  res.end('<h1>Hello World!</h1><hr>')
-})
+  exitHook(async (signal) =>{
+    console.log('da dong ket noi mongodb')
+    await CLOSE_DB()
+  })
+}
 
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello DoanNam Dev, I am running at http://${ hostname }:${ port }/`)
-})
+// Kiểm tra kết nối mongodb và start server
+(async () =>{
+  try {
+    console.log('dang ket noi mongodb')
+    await CONNECT_BD()
+    console.log('da ket noi mongodb')
+    START_SERVER()
+  } catch (error) {
+    console.error(error)
+    process.exit(0)
+  }
+})()
+
+// Kết nối tới mongodb cách 2
+// CONNECT_BD()
+// .then(() =>{
+//   console.log('da ket noi mongodb atlas')
+// })
+// .then(() => START_SERVER())
+// .catch(error => {
+//     console.error(error)
+//     process.exit(0)
+// })
