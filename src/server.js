@@ -2,15 +2,20 @@ import express from 'express'
 import { CONNECT_BD, GET_DB, CLOSE_DB} from './config/mongodb' 
 import exitHook  from 'async-exit-hook'
 import {env} from  './config/environment'
+import {APIs_V1} from '~/routes/v1'
+import {errorHandlingMiddleware}  from '~/middlewares/errorHandlingMiddleware'
+
 const START_SERVER = () =>{
   const app = express()
 
-  app.get('/', async (req, res) => {
-    // Test Absolute import mapOrder
-    // eslint-disable-next-line no-console
-    console.log(await GET_DB().listCollections().toArray())
-    res.end('<h1>Hello World!</h1><hr>')
-  })
+  // Bật req.body json data
+  app.use(express.json())
+
+  // Sử dụng api v1
+  app.use('/v1', APIs_V1)
+
+  // middleware xử lý lỗi tập trung, tất cả các phần catch mà dùng next(error) thì nó sẽ vào middleware này
+  app.use(errorHandlingMiddleware)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     // eslint-disable-next-line no-console
