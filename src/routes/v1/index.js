@@ -7,10 +7,10 @@ import express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { userRoute } from './userRoute'
 
-const Router = express.Router();
+const Router = express.Router()
 
-Router.get('/status', (req, res) =>{
-    res.status(StatusCodes.OK).json({message: 'API v1 are ready to use'})
+Router.get('/status', (req, res) => {
+  res.status(StatusCodes.OK).json({ message: 'API v1 are ready to use' })
 })
 
 Router.use('/users', userRoute)

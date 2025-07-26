@@ -1,11 +1,12 @@
+/* eslint-disable no-console */
 import express from 'express'
-import { CONNECT_BD, GET_DB, CLOSE_DB} from './config/mongodb' 
-import exitHook  from 'async-exit-hook'
-import {env} from  './config/environment'
-import {APIs_V1} from '~/routes/v1'
-import {errorHandlingMiddleware}  from '~/middlewares/errorHandlingMiddleware'
+import { CONNECT_BD, CLOSE_DB } from './config/mongodb'
+import exitHook from 'async-exit-hook'
+import { env } from './config/environment'
+import { APIs_V1 } from '~/routes/v1'
+import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 
-const START_SERVER = () =>{
+const START_SERVER = () => {
   const app = express()
 
   // Bật req.body json data
@@ -18,18 +19,18 @@ const START_SERVER = () =>{
   app.use(errorHandlingMiddleware)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
-    // eslint-disable-next-line no-console
     console.log(`Hello ${env.AUTHOR}, I am running at http://${env.APP_HOST}:${env.APP_PORT}/`)
   })
 
-  exitHook(async (signal) =>{
+  // Đóng kết nối với db khi server dừng hay bất kỳ lỗi nào khác bằng thư viện exithook
+  exitHook(async () => {
     console.log('da dong ket noi mongodb')
     await CLOSE_DB()
   })
 }
 
 // Kiểm tra kết nối mongodb và start server
-(async () =>{
+(async () => {
   try {
     console.log('dang ket noi mongodb')
     await CONNECT_BD()

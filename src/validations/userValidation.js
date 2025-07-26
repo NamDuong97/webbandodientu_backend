@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable indent */
 /**
  * Updated by trungquandev.com's author on August 17 2023
  * YouTube: https://youtube.com/@trungquandev
@@ -19,14 +21,15 @@ const createNew = async (req, res, next) => {
                 'any.max': 'userName toi da 50 ky tu',
                 'any.trim': 'userName khong duoc co khoang trong o dau'
             }),
-            passWord: Joi.string().required().min(3).max(50).trim().strict(),
+            passWord: Joi.string().required().min(3).max(50).trim().strict()
         })
         try {
             console.log(req.body)
             // abortEarly = false để xuất ra hết lỗi, chứ k dừng lại ở lỗi đầu , kiểm tra validation
-            await correctCondition.validateAsync(req.body, {abortEarly : false})
-            next() //để chuyển xử lý sang controller
-        }catch (error) {
+            await correctCondition.validateAsync(req.body, { abortEarly : false })
+            //để chuyển xử lý sang controller
+            next()
+        } catch (error) {
             const errorMessage = new Error(error).message
             const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage)
             next(customError) // gọi middleware báo lỗi tập trung trong server.js
@@ -36,4 +39,4 @@ const createNew = async (req, res, next) => {
 // Xuất ra tất cả validation để của bảng user để sử dụng trong userRoute.js
 export const userValidation = {
    createNew
-} 
+}
