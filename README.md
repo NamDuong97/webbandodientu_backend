@@ -57,3 +57,26 @@ if (env.BUILD_MODE !== 'dev') delete responseError.stack
 
 # Trong model thao tác với CSDL rồi mà vẫn cần validate, lý do là khi coder xử lý dữ liệu ở tầng service gây ra lỗi 
 # thì trước khi cập nhật vào csdl dữ liệu sẽ valid 1 lần nữa để chặn dữ liệu bị lỗi 
+
+# lấy những bảng có liên quan đến bảng category đang lấy, giống include trong .net 
+# $match là toán tử để tìm kiếm, $lookup là toán tử giống join bảng, giống hàm include trong .net để lấy các đối tượng liên quan
+# from là tên bảng mún lấy dữ liệu, localField là khoá của bảng gốc, foreignField là khoá của bảng muốn lấy, giống A inner join B on A.id = b.categoryId, as là tên thuộc tính cho bảng muốn lấy kèm để client sử dụng
+const getDetails = async (id) => {
+  try {
+    const result = await GET_DB().collection(COLLECTION_NAME).aggregate([
+      { $match: {
+        _id: new ObjectId(id),
+        _destroy: false
+      } },
+      { $lookup: {
+        from: categoryModel.COLLECTION_NAME,
+        localField: '_id',
+        foreignField: 'categoryId',
+        as: 'products'
+      } }
+    ]).toArray()
+    return result[0] || {}
+  } catch (error) {
+    throw new Error(error)
+  }
+}

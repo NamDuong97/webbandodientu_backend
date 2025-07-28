@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import { StatusCodes } from 'http-status-codes'
-import { userService } from '~/services/userService'
+import { categoryService } from '~/services/categoryService'
 
 const getAlls = async (req, res, next) => {
   try {
     // Điều hướng sang service xử lý
-    const users = await userService.getAlls()
-    res.status(StatusCodes.OK).json(users)
+    const categories = await categoryService.getAlls()
+    res.status(StatusCodes.OK).json(categories)
   } catch (error) {
     console.log(error)
     next(error)
@@ -17,8 +17,8 @@ const createNew = async (req, res, next) => {
   try {
     console.log(req.body)
     // Điều hướng sang service xử lý
-    const createdUser = await userService.createNew(req.body)
-    res.status(StatusCodes.CREATED).json(createdUser)
+    const createdCategory = await categoryService.createNew(req.body)
+    res.status(StatusCodes.CREATED).json(createdCategory)
   } catch (error) {
     console.log(error)
     // dùng cái này để xử lý lỗi tập trung bởi middleware xử lý lỗi trong server.js - app.use(errorHandlingMiddleware)
@@ -29,17 +29,17 @@ const createNew = async (req, res, next) => {
 const getDetails = async (req, res, next) => {
   try {
     console.log(req.body)
-    const userId = req.params.id
+    const categoryId = req.params.id
     // Điều hướng sang service xử lý
-    const user = await userService.getDetails(userId)
-    res.status(StatusCodes.OK).json(user)
+    const category = await categoryService.getDetails(categoryId)
+    res.status(StatusCodes.OK).json(category)
   } catch (error) {
     console.log(error)
     next(error)
   }
 }
 
-export const userController = {
+export const categoryController = {
   getAlls,
   createNew,
   getDetails

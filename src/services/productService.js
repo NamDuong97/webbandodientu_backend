@@ -6,14 +6,14 @@
  */
 
 // import ApiError from "~/utils/ApiError"
-import { userModel } from '~/models/userModel'
+import { productModel } from '~/models/productModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 
 const getAlls = async () => {
   try {
-    const users = await userModel.getAlls()
-    return users
+    const products = await productModel.getAlls()
+    return products
   } catch (error) {
     throw error
   }
@@ -25,8 +25,8 @@ const createNew = async (reqBody) => {
       ...reqBody
     }
     // Xu ly logic goi repository o day hoac cac logic khac
-    const createdUser = await userModel.createNew(newUser)
-    const getNewUser = await userModel.findOneById(createdUser.insertedId)
+    const createdUser = await productModel.createNew(newUser)
+    const getNewUser = await productModel.findOneById(createdUser.insertedId)
     return getNewUser
   } catch (error) {
     throw error
@@ -35,18 +35,18 @@ const createNew = async (reqBody) => {
 
 const getDetails = async (id) => {
   try {
-    const user = await userModel.getDetails(id)
-    console.log('user hien tai la: ', user)
-    if (!user) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'user not found')
+    const product = await productModel.getDetails(id)
+    console.log('product hien tai la: ', product)
+    if (!product) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'product not found')
     }
-    return user
+    return product
   } catch (error) {
     throw error
   }
 }
 
-export const userService = {
+export const productService = {
   getAlls,
   createNew,
   getDetails

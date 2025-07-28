@@ -1,20 +1,18 @@
-
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { userValidation } from '~/validations/userValidation'
-import { userController } from '~/controllers/userController'
+import { categoryValidation } from '~/validations/categoryValidation'
+import { categoryController } from '~/controllers/categoryController'
 
 const Router = express.Router()
 
 Router.route('/')
-  .get(userController.getAlls)
+  .get(categoryController.getAlls)
 // Gọi arrow function chứ k thực thi, khi nào client gọi tới ms thực thi
 // route post này gọi validation dữ liệu trong validation này có điều hướng sang controller rồi
-  .post(userValidation.createNew, userController.createNew)
+  .post(categoryValidation.createNew, categoryController.createNew)
 
 Router.route('/:id')
   // Không có dữ liệu gửi lên do vậy không cần gọi validation ở đây
-  .get(userController.getDetails)
+  .get(categoryController.getDetails)
 
-export const userRoute = Router
-
+export const categoryRoute = Router

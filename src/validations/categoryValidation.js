@@ -1,4 +1,3 @@
-
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
@@ -8,14 +7,19 @@ import ApiError from '~/utils/ApiError'
 const createNew = async (req, res, next) => {
         // Cấu hình validation dữ liệu bằng thư viện Joi
         const correctCondition = Joi.object({
-            userName: Joi.string().required().min(3).max(50).trim().strict().messages({
-                'any.required' : 'userName la bat buoc',
-                'any.empty': 'userName khong duoc de rong',
-                'any.min': 'userName toi thieu 3 ky tu',
-                'any.max': 'userName toi da 50 ky tu',
-                'any.trim': 'userName khong duoc co khoang trong o dau'
+            name: Joi.string().required().min(3).max(100).trim().strict().messages({
+                'string.base': 'Tên danh mục phải là chuỗi',
+                'string.empty': 'Tên danh mục không được để trống',
+                'string.min': 'Tên danh mục phải có ít nhất 3 ký tự',
+                'string.max': 'Tên danh mục không được vượt quá 100 ký tự',
+                'any.required': 'Trường tên danh mục là bắt buộc'
             }),
-            passWord: Joi.string().required().min(3).max(50).trim().strict()
+            description: Joi.string().max(500).allow('', null).messages({
+                'string.max': 'Mô tả không được vượt quá 500 ký tự'
+            }),
+            status: Joi.string().valid('Hiển thị', 'Ẩn').default('Hiển thị').messages({
+                'any.only': 'Trạng thái phải là "Hiển thị" hoặc "Ẩn"'
+            })
         })
         try {
             console.log(req.body)
@@ -30,7 +34,7 @@ const createNew = async (req, res, next) => {
         }
     }
 
-// Xuất ra tất cả validation để của bảng user để sử dụng trong userRoute.js
-export const userValidation = {
+// Xuất ra tất cả validation để của bảng category để sử dụng trong categoryRoute.js
+export const categoryValidation = {
    createNew
 }
