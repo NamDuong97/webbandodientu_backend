@@ -14,5 +14,9 @@ Router.route('/')
 // route post này gọi validation dữ liệu trong validation này có điều hướng sang controller rồi
   .post(userValidation.createNew, userController.createNew)
 
+Router.route('/:id')
+  // Không có dữ liệu gửi lên do vậy không cần gọi validation ở đây
+  .get(userController.getDetails)
+
 export const userRoute = Router
 

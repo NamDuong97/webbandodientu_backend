@@ -54,3 +54,6 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
   },
 3. Sửa lại middleware errorHandlingMiddleware.js thêm dòng code xóa stack trade
 if (env.BUILD_MODE !== 'dev') delete responseError.stack
+
+# Trong model thao tác với CSDL rồi mà vẫn cần validate, lý do là khi coder xử lý dữ liệu ở tầng service gây ra lỗi 
+# thì trước khi cập nhật vào csdl dữ liệu sẽ valid 1 lần nữa để chặn dữ liệu bị lỗi 
